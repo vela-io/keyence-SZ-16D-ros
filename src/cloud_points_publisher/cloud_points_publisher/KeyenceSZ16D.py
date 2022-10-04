@@ -3,7 +3,7 @@ import binascii
 import time
 
 
-class KeyenceSZ16Dping:
+class KeyenceSZ16D:
 
     def __init__(self):
         try:
@@ -43,7 +43,7 @@ class KeyenceSZ16Dping:
 
 
 if __name__ == '__main__':
-    app = KeyenceSZ16Dping()
+    app = KeyenceSZ16D()
     while True:
         data = app.tick()
         print(data)

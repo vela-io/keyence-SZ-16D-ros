@@ -1,13 +1,14 @@
 import rclpy
 from rclpy.node import Node
 from sensor_msgs.msg import LaserScan
+from .KeyenceSZ16D import KeyenceSZ16D
 from .FakerLaserData import FakeLaser
 
 class CloudPointsPublisher(Node):
     def __init__(self):
         super().__init__('cloud_points_publisher')
         self.publisher = self.create_publisher(LaserScan, 'cloud_points_topic', 10)   
-        self.timer = self.create_timer(1, self.laser_callback)
+        self.laser_callback()
     
     def laser_callback(self):
 
@@ -35,7 +36,7 @@ class CloudPointsPublisher(Node):
         laser.range_min = range_min_in_m
         laser.range_max = range_max_in_m
 
-        laser_inputs = FakeLaser()
+        laser_inputs = KeyenceSZ16D
 
         laser.ranges = laser_inputs.tick() 
 
