@@ -8,35 +8,36 @@ class CloudPointsPublisher(Node):
     def __init__(self):
         super().__init__('cloud_points_publisher')
         self.publisher = self.create_publisher(LaserScan, 'cloud_points_topic', 10)   
-        self.timer = self.create_timer(1, self.laser_callback)
+        self.timer = self.create_timer(0.120, self.laser_callback)
     
     def laser_callback(self):
-
-        laser_freq_in_ms = 66.0e-06
+        scan_response_in_s = 0.120
         num_points = 751
+        
 
         laser = LaserScan()
         
         laser.header.frame_id = "frame_keyence_scan"
-
-        angle_min_in_rad = -0.785398
-        angle_max_in_rad = 0.92699
-        angle_increment_in_rad = 0.00628 
+        laser.header.stamp = self.get_clock().now().to_msg()
+        
+        angle_min_in_rad = -0.785398 
+        angle_max_in_rad = 3.92699
+        angle_increment_in_rad = 0.006283185
 
         laser.angle_min = angle_min_in_rad
         laser.angle_max = angle_max_in_rad
         laser.angle_increment = angle_increment_in_rad
-
-        laser.scan_time = 1.0 / laser_freq_in_ms
-        laser.time_increment = 1.0 / laser_freq_in_ms / num_points
         
-        range_min_in_m = 4.2
+        laser.scan_time = scan_response_in_s
+        laser.time_increment = scan_response_in_s / num_points
+        
+        range_min_in_m = 0.01
         range_max_in_m = 10.0
 
         laser.range_min = range_min_in_m
         laser.range_max = range_max_in_m
 
-        laser_inputs = KeyenceSZ16D
+        laser_inputs = KeyenceSZ16D()
 
         laser.ranges = laser_inputs.get_laser_scan() 
 

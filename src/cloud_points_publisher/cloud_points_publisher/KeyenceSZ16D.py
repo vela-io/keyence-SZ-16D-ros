@@ -53,32 +53,44 @@ class KeyenceSZ16D:
         value = []
         points = []
         
+        self.execute_command("request_measured_value")
         buffer = self.listen(1513)
+        
+        print(buffer)
         
         data = buffer[6:-2]
         data = data[3:]
         
+        print(data)     
         value = [data[i : i + 1] for i in range(len(data))]     
         
-        value = [binascii.hexlify(value[i]).decode('utf-8') for i in range(len(value))]
+        value = [binascii.hexlify(value[i]) for i in range(len(value))]
+        
+        print(value)
         
         list_int = [int(item, 16) for item in value]
-        
+        print(list_int)
         for i in range(len(list_int)):
             if i % 2 == 0:
                 upper_level = (list_int[i] & 63) << 8
             else:
                 lower_level = upper_level + list_int[i]
                 points.append(lower_level)
-
+        print(points)
         points_f = []
         for i in range(len(points)):
             points_f.append(float(points[i]) / 1000.0)
+        print(points_f)
         return points_f 
     
 
 if __name__ == '__main__':
     app = KeyenceSZ16D()
-    app.execute_command("request_measured_value")
-    while True:
-        cloud_points = app.get_laser_scan()
+    app.execute_command("stop_continuous_sending")
+    app.get_laser_scan()
+    #buffer = app.listen(1513)
+    #print(buffer)
+    
+    #while True:
+    #    cloud_points = app.get_laser_scan()
+    #    print(len(cloud_points))
