@@ -8,7 +8,7 @@ class CloudPointsPublisher(Node):
     def __init__(self):
         super().__init__('cloud_points_publisher')
         self.publisher = self.create_publisher(LaserScan, 'cloud_points_topic', 10)   
-        self.laser_callback()
+        self.timer = self.create_timer(1, self.laser_callback)
     
     def laser_callback(self):
 
@@ -38,7 +38,7 @@ class CloudPointsPublisher(Node):
 
         laser_inputs = KeyenceSZ16D
 
-        laser.ranges = laser_inputs.tick() 
+        laser.ranges = laser_inputs.get_laser_scan() 
 
         self.publisher.publish(laser)
 
