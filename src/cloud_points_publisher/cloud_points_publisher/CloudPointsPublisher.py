@@ -13,7 +13,6 @@ class CloudPointsPublisher(Node):
     def laser_callback(self):
         scan_response_in_s = 0.120
         num_points = 751
-        
 
         laser = LaserScan()
         
