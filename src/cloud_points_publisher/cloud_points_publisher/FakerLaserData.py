@@ -5,7 +5,7 @@ class FakeLaser:
     def __init__(self):
         pass
 
-    def tick(self):
+    def get_laser_scan(self):
         points = []
         min_distance = 4200
         max_distance = 5000
